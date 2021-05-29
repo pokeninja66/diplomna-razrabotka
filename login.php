@@ -2,7 +2,6 @@
 #
 $_HAS_PAGE_ACCESS = true;
 require "./config.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +14,7 @@ require "./config.php";
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Diplomna</title>
+    <title>Diplomna login</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,6 +23,7 @@ require "./config.php";
     <!-- css -->
     <link rel="stylesheet" href="./public/css/reset.css">
     <link rel="stylesheet" href="./public/css/main.css">
+    <link rel="stylesheet" href="./public/css/login.css">
     <!-- add VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
@@ -39,20 +39,28 @@ require "./config.php";
         <header>
             <nav id="navigation">
                 <ul>
-                    <li><a href="/login">Login</a></li>
-                    <li>Login</li>
-                    <li>Login</li>
+                    <li><a href="/">Home</a></li>
                 </ul>
             </nav>
         </header>
 
         <div class="main-content">
 
+
+            <div class="login-container">
+                <label for="hashText">Username</label>
+                <input id="Username" type="text">
+                <label for="hashText">Password</label>
+                <input id="Password" type="password">
+
+                <a class="btn">login</a>
+            </div>
+
         </div>
 
     </div>
 
-    <script src="./public/scripts/main.js" async defer></script>
+    <script src="./public/scripts/login.js" async defer></script>
 </body>
 
 </html>

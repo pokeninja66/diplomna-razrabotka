@@ -1,0 +1,28 @@
+.login-container {
+    background: #00b49d;
+    display: grid;
+    grid-gap: 20px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 0px 156px 0px rgba(0, 0, 0, 0.32);
+    -webkit-box-shadow: 0px 0px 156px 0px rgba(0, 0, 0, 0.32);
+    -moz-box-shadow: 0px 0px 156px 0px rgba(0, 0, 0, 0.32);
+}
+
+input,
+textarea {
+    min-height: 35px;
+    min-width: 350px;
+    text-indent: 10px;
+    border-radius: 8px;
+    border: 1px solid #001630;
+}
+
+.btn {
+    text-align: center;
+    background-color: #001630;
+    border-radius: 8px;
+    cursor: pointer;
+    color: whitesmoke;
+    padding: 1rem;
+}
