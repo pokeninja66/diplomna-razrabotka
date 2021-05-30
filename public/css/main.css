@@ -1,10 +1,10 @@
 body {
     background-color: #285c6f;
-    background: #285c6f url("../images/doge_logo.png") no-repeat center center fixed;
+    /* background: #285c6f url("../images/doge_logo.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: calc(85vh - 4rem);
+    background-size: calc(85vh - 4rem); */
     /* background-image: linear-gradient(to bottom, #009e9a, #009697, #008d94, #008590, #077d8b, #127686, #1a6e80, #20677a, #265f72, #2b576a, #2e4f61, #2f4858); */
 }
 

@@ -24,8 +24,11 @@ require "./config.php";
     <link rel="stylesheet" href="./public/css/reset.css">
     <link rel="stylesheet" href="./public/css/main.css">
     <link rel="stylesheet" href="./public/css/login.css">
-    <!-- add VUE -->
+    <!-- js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 </head>
 
@@ -34,7 +37,7 @@ require "./config.php";
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    <div id="app">
+    <div id="app-login">
 
         <header>
             <nav id="navigation">
@@ -49,11 +52,11 @@ require "./config.php";
 
             <div class="login-container">
                 <label for="hashText">Username</label>
-                <input id="Username" type="text">
+                <input id="Username" v-model.trim="username" type="text">
                 <label for="hashText">Password</label>
-                <input id="Password" type="password">
+                <input id="Password" v-model.trim="password" type="password">
 
-                <a class="btn">login</a>
+                <a class="btn" @click="sendRequest()">login</a>
             </div>
 
         </div>

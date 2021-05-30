@@ -1,12 +1,26 @@
-# turn on redirect to https
+#Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+Options All -Indexes
 RewriteEngine on
+RewriteBase /
+
+# turn on redirect to https
 RewriteCond %{HTTPS} !on
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
 <IfModule mod_headers.c>
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </IfModule>
-# remove the php extention
-RewriteEngine on
+
+## hide .php extension
+RewriteCond %{REQUEST_METHOD} !POST [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule !.*\.php$ %{REQUEST_FILENAME}.php [QSA,L]
 
+#
+ErrorDocument 404 /404.php
