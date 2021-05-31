@@ -1,15 +1,20 @@
+:root {
+    --main-theme: #0d1117;
+    --main-second: #24354F;
+    /*#285c6f;*/
+    --header: #1D2A3D;
+    /* gradient */
+    background-image: linear-gradient(to top, #0d1117, #15202b, #173041, #144157, #00536d);
+    color: whitesmoke;
+}
+
 body {
-    background-color: #285c6f;
-    /* background: #285c6f url("../images/doge_logo.png") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: calc(85vh - 4rem); */
-    /* background-image: linear-gradient(to bottom, #009e9a, #009697, #008d94, #008590, #077d8b, #127686, #1a6e80, #20677a, #265f72, #2b576a, #2e4f61, #2f4858); */
+    background-image: linear-gradient(to bottom, #0d1117, #15202b, #173041, #144157, #00536d);
 }
 
 header {
-    background-color: #599d8f;
+    background-color: var(--header);
+    width: 100%;
     padding: 1.2rem 0;
     box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
     -webkit-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);

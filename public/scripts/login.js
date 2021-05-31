@@ -27,6 +27,7 @@ const app = new Vue({
             }
             const _self = this;
 
+
             $.post("./requests.php", {
                 action: 'login',
                 data: {
