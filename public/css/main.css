@@ -16,9 +16,9 @@ header {
     background-color: var(--header);
     width: 100%;
     padding: 1.2rem 0;
-    box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
+    /* box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
     -webkit-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
-    -moz-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
+    -moz-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);*/
 }
 
 a {
@@ -32,10 +32,12 @@ a {
 #navigation {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
-#navigation ul {}
+#navigation ul {
+    margin: 0 1rem;
+}
 
 #navigation>ul li {
     margin: 0 auto;
