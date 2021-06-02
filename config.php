@@ -17,7 +17,7 @@ if(!isset($_SESSION['csrf_token'])){
     $_SESSION['csrf_token'] = Common::generateToken();
 }
 
-//print_r($_SESSION);
+#print_r($_SESSION);
 
 # db test
 // $query = "SELECT * FROM `users`";

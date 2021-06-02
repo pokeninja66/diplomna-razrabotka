@@ -51,6 +51,8 @@ require "./config.php";
 
 
             <div class="login-container">
+                <input type="hidden" v-model.trim='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
+
                 <label for="hashText">Username</label>
                 <input id="Username" v-model.trim="username" type="text">
                 <label for="hashText">Password</label>
@@ -62,7 +64,9 @@ require "./config.php";
         </div>
 
     </div>
-
+    <script>
+        const csrf = '<?php echo $_SESSION['csrf_token']; ?>';
+    </script>
     <script src="./public/scripts/login.js" async defer></script>
 </body>
 
