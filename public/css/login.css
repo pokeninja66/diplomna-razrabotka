@@ -5,6 +5,7 @@
     padding: 2rem;
     border-radius: 5%;
     border: 1px solid whitesmoke;
+    max-width: 320px;
     /* box-shadow: 0px 0px 156px 0px rgb(0 0 0 / 32%);
    
     /* -webkit-box-shadow: 0px 0px 156px 0px rgb(0 0 0 / 32%); */
@@ -30,4 +31,53 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin: 0 auto;
+}
+
+.error-text {
+    padding: 1rem;
+    color: crimson;
+    background: ghostwhite;
+    border-radius: 30px;
+}
+
+
+/* signup */
+
+ul {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+li {
+    margin-bottom: 5px;
+    color: crimson;
+    position: relative;
+}
+
+li:before {
+    content: "";
+    width: 0%;
+    height: 2px;
+    background: #2ecc71;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    transition: all .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+/* Password Input --------- */
+
+
+/* Checkmark & Strikethrough --------- */
+
+.is_valid {
+    color: rgba(136, 152, 170, 0.8);
+}
+
+.is_valid:before {
+    width: 100%;
 }
