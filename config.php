@@ -20,5 +20,5 @@ if(!isset($_SESSION['csrf_token'])){
 #print_r($_SESSION);
 
 # db test
-// $query = "SELECT * FROM `users`";
-// Common::prettyPrint(DB::fetchObjectSet(DB::query($query)));
+//  $query = "SHOW TABLES";
+//  Common::prettyPrint(DB::fetchObjectSet(DB::query($query)));
