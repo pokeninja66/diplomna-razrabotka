@@ -41,7 +41,11 @@ const app = new Vue({
                     password: this.password
                 }
             }, function(data) {
-                console.log("jquery:", data);
+                if (data.status) {
+                    window.location = "./";
+                } else {
+                    alert(data.msg);
+                }
             });
 
         }

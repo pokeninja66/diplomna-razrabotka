@@ -99,7 +99,11 @@ const app = new Vue({
                     user: this.user
                 }
             }, function(data) {
-                console.log("jquery:", data);
+                if (data.status) {
+                    window.location = "./";
+                } else {
+                    alert(data.msg);
+                }
             });
 
         },
