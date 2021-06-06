@@ -1,6 +1,8 @@
 <?php
 // var_dump($GLOBALS);
 // print_r($_REQUEST);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 
@@ -11,9 +13,17 @@ if (!isset($_REQUEST["action"])) {
 }
 #
 session_start();
-require "./inc/Common.php";
+
+require "vendor/autoload.php";
+require "./inc/_Config.php";
 require "./inc/_DB.php";
+require "./inc/Common.php";
+
+#set DB
+DB::Init(Config::$server, Config::$username, Config::$password, Config::$database);
+
 require "./inc/controllers/Users.php";
+require "./inc/controllers/CustomCrypt.php";
 
 if ($_REQUEST['action'] == "login") {
 
@@ -22,6 +32,12 @@ if ($_REQUEST['action'] == "login") {
     $res->msg = "error";
     #
     $requestData = $_REQUEST['data'];
+
+    if (isset($_SESSION['User'])) {
+        $res->msg = "error user is logged!";
+        echo json_encode($res);
+        exit();
+    }
 
     // check for valid token
     if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
@@ -34,7 +50,10 @@ if ($_REQUEST['action'] == "login") {
     }
 
     //print_r($requestData);
-    $res->data =  Users::login($requestData['username'], $requestData['password']);
+    $res->status =  Users::login($requestData['username'], $requestData['password']);
+    if ($res->status) {
+        $res->msg = "Login complete!";
+    }
     //print_r($res);
 
     echo json_encode($res);
@@ -52,6 +71,12 @@ if ($_REQUEST['action'] == "signup") {
     #
     $requestData = $_REQUEST['data'];
     $userInfo = $requestData['user'];
+
+    if (isset($_SESSION['User'])) {
+        $res->msg = "error user is logged!";
+        echo json_encode($res);
+        exit();
+    }
 
     // check for valid token
     if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
@@ -94,6 +119,9 @@ if ($_REQUEST['action'] == "signup") {
 
     // register the user
     $res->status =  Users::signup($userInfo);
+    if ($res->status) {
+        $res->msg = "Signup complete!";
+    }
     //print_r($res);
 
     echo json_encode($res);
