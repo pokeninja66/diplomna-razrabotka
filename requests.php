@@ -134,4 +134,36 @@ if ($_REQUEST['action'] == "signup") {
     exit();
 }
 
+
+if ($_REQUEST['action'] == "create-post") {
+
+    $res = new stdClass();
+    $res->status = false;
+    $res->msg = "error";
+    #
+    $requestData = $_REQUEST['data'];
+
+    if (!isset($_SESSION['User'])) {
+        $res->msg = "user is not logged!";
+        echo json_encode($res);
+        exit();
+    }
+
+    // check for valid token
+    if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
+        $res->msg =  "access denied!";
+        // change token
+        $_SESSION['csrf_token'] = Common::generateToken();
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    print_r($requestData);
+  
+
+    echo json_encode($res);
+    exit();
+}
+
 exit();

@@ -3,7 +3,7 @@
 $_HAS_PAGE_ACCESS = true;
 require "./config.php";
 //
-if(isset($_SESSION['User'])){
+if (isset($_SESSION['User'])) {
     header("Location: ./");
     exit();
 }
@@ -19,7 +19,7 @@ if(isset($_SESSION['User'])){
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Diplomna login</title>
+    <title>Diplomna Signup</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -48,6 +48,9 @@ if(isset($_SESSION['User'])){
             <nav id="navigation">
                 <ul>
                     <li><a href="/">Home</a></li>
+                    <?php foreach (Common::setMenuArr() as $name => $link) { ?>
+                        <li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </header>
@@ -59,7 +62,7 @@ if(isset($_SESSION['User'])){
                 <input type="hidden" v-model.trim='csrf_token' value="<?php echo $_SESSION['csrf_token']; ?>" />
 
                 <label for="hashText">Username</label>
-                <input id="Username" v-model.trim="user.username" type="text"  @blur="validateUsername" @input="validateUsername">
+                <input id="Username" v-model.trim="user.username" type="text" @blur="validateUsername" @input="validateUsername">
 
                 <span class="error-text" v-if="!valid_username">
                     Please enter a valid username! Must be atleas 3 charackters!
@@ -73,7 +76,7 @@ if(isset($_SESSION['User'])){
                 </span>
 
                 <label for="hashText">Password</label>
-                <input id="Password" v-model.trim="user.password1" type="password"  @input="validatePassword" @blur="validatePassword" autocomplete="new-password">
+                <input id="Password" v-model.trim="user.password1" type="password" @input="validatePassword" @blur="validatePassword" autocomplete="new-password">
 
                 <ul v-if="user.password1!==''">
                     <li :class="{ is_valid: contains_eight_characters }">Contains 6 Characters</li>

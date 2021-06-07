@@ -1,0 +1,37 @@
+.container {
+    background: #304865;
+    display: grid;
+    grid-gap: 15px;
+    padding: 2rem;
+    border-radius: 5%;
+    border: 1px solid whitesmoke;
+    max-width: 320px;
+}
+
+
+/* Preview */
+
+.preview {
+    margin: 0 auto;
+}
+
+input,
+textarea {
+    min-height: 25px;
+    min-width: 250px;
+    text-indent: 10px;
+    border-radius: 8px;
+    border: 1px solid #2d598f;
+}
+
+.btn {
+    text-align: center;
+    background-color: #00536D;
+    border-radius: 8px;
+    cursor: pointer;
+    color: whitesmoke;
+    padding: 0.7rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 auto;
+}
