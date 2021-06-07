@@ -2,6 +2,12 @@
 #
 $_HAS_PAGE_ACCESS = true;
 require "./config.php";
+//
+if(isset($_SESSION['User'])){
+    header("Location: ./");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

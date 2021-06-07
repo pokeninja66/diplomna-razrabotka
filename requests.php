@@ -51,9 +51,7 @@ if ($_REQUEST['action'] == "login") {
 
     //print_r($requestData);
     $res->status =  Users::login($requestData['username'], $requestData['password']);
-    if ($res->status) {
-        $res->msg = "Login complete!";
-    }
+    $res->msg = $res->status ? "Login complete!" : "Invalid username or password!";
     //print_r($res);
 
     echo json_encode($res);
@@ -83,6 +81,14 @@ if ($_REQUEST['action'] == "signup") {
         $res->msg =  "access denied!";
         // change token
         $_SESSION['csrf_token'] = Common::generateToken();
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    // check for valid user information
+    if (Users::checkForExistingUser($userInfo['username'])) {
+        $res->msg =  "User exists!";
         //
         echo json_encode($res);
         exit();

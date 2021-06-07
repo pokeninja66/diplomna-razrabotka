@@ -34,6 +34,7 @@ class Users
 
     public static function signup($userInfo)
     {
+        # @TODO add check if user is exists!
         if (!is_array($userInfo)) {
             return false;
         }
@@ -51,6 +52,12 @@ class Users
         }
 
         return false;
+    }
+
+    public static function checkForExistingUser($username){
+        $username = DB::mysqliRealEscapeString($username);
+        $query = "SELECT id FROM `users` WHERE `username`='$username'";
+        return DB::numRows(DB::query($query));
     }
 
     public static function checkPassword($pass)

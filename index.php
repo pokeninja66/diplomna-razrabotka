@@ -39,9 +39,11 @@ require "./config.php";
         <header>
             <nav id="navigation">
                 <ul>
-                    <li><a href="/login">Login</a></li>
-                    <li>Login</li>
-                    <li>Login</li>
+                    <li><a href="/">Home</a></li>
+                    <?php foreach (Common::setMenuArr() as $name => $link) { ?>
+                        <li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
+                    <?php } ?>
+                    </li>
                 </ul>
             </nav>
         </header>
