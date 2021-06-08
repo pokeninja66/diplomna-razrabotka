@@ -34,7 +34,7 @@ class Users
 
     public static function signup($userInfo)
     {
-        # @TODO add check if user is exists!
+       
         if (!is_array($userInfo)) {
             return false;
         }

@@ -43,14 +43,17 @@ require "./config.php";
                     <?php foreach (Common::setMenuArr() as $name => $link) { ?>
                         <li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
                     <?php } ?>
-                
+
                 </ul>
             </nav>
         </header>
 
         <div class="main-content">
             <pre>
-                <?php print_r($_SESSION); ?>
+                <?php
+                        print_r($_SESSION);
+                        print_r(Posts::fetchPosts());
+                ?>
             </pre>
         </div>
 

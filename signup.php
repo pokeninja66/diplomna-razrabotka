@@ -78,7 +78,7 @@ if (isset($_SESSION['User'])) {
                 <label for="hashText">Password</label>
                 <input id="Password" v-model.trim="user.password1" type="password" @input="validatePassword" @blur="validatePassword" autocomplete="new-password">
 
-                <ul v-if="user.password1!==''">
+                <ul v-if="user.password1!==''" class="pass-requirements">
                     <li :class="{ is_valid: contains_eight_characters }">Contains 6 Characters</li>
                     <li :class="{ is_valid: contains_number }">Contains Number</li>
                     <li :class="{ is_valid: contains_uppercase }">Contains Uppercase</li>

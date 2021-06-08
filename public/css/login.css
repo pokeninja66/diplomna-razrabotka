@@ -43,14 +43,14 @@ textarea {
 
 /* signup */
 
-ul {
+.pass-requirements {
     padding-left: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-li {
+.pass-requirements li {
     margin-bottom: 5px;
     color: crimson;
     position: relative;

@@ -24,6 +24,7 @@ DB::Init(Config::$server, Config::$username, Config::$password, Config::$databas
 
 require "./inc/controllers/Users.php";
 require "./inc/controllers/CustomCrypt.php";
+require "./inc/controllers/Posts.php";
 
 if ($_REQUEST['action'] == "login") {
 
@@ -142,6 +143,7 @@ if ($_REQUEST['action'] == "create-post") {
     $res->msg = "error";
     #
     $requestData = $_REQUEST['data'];
+    $post = $requestData['post'];
 
     if (!isset($_SESSION['User'])) {
         $res->msg = "user is not logged!";
@@ -159,8 +161,24 @@ if ($_REQUEST['action'] == "create-post") {
         exit();
     }
 
-    print_r($requestData);
-  
+    if (empty($post['title'])) {
+        $res->msg =  "You need a title!";
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    if (empty($post['image']) || !Posts::checkIfValidImage($post['image'])) {
+        $res->msg =  "You need an image!";
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+
+    $res->status = Posts::createPost($requestData['post']);
+    $res->msg = $res->status ? "Post created!" : "Error during creation!";
+
 
     echo json_encode($res);
     exit();

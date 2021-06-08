@@ -7,6 +7,7 @@ if(!isset($_HAS_PAGE_ACCESS)){
 require "./inc/_Config.php";
 require "./inc/_DB.php";
 require "./inc/Common.php";
+require "./inc/controllers/Posts.php";
 
 #set DB
 DB::Init(Config::$server, Config::$username, Config::$password, Config::$database);
