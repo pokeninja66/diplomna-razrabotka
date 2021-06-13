@@ -34,10 +34,11 @@ class Users
 
     public static function signup($userInfo)
     {
-       
+        // convert it to array so that we cam escape it
         if (!is_array($userInfo)) {
-            return false;
+            $userInfo =  (array) $userInfo;
         }
+      
         // escape the array
         DB::mysqliRealEscapeStringOnArray($userInfo);
 

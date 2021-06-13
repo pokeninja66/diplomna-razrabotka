@@ -1,18 +1,33 @@
 <?php
-// var_dump($GLOBALS);
-// print_r($_REQUEST);
+// using fetch bracks for some reason the session_start
+// and having the session Id in the cookie does not work...
+// ...
+// Well it was the session cookie that fucked me up. It was set to 0 so when the request was send it expired when you used it in an fetch requets...
+//var_dump($_COOKIE);
+//session_id($_COOKIE["PHPSESSID"]);
+
+
+session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+//print_r($_SESSION);
+
+// kek | so you need to decode the payload using fetch... but not jquery
+$payload = file_get_contents('php://input');
+$RequestInfo = json_decode($payload);
+//print_r($RequestInfo);
+
+// print_r($GLOBALS);
+// print_r($_REQUEST);
 
 header('Content-Type: application/json');
 
-if (!isset($_REQUEST["action"])) {
+if (!isset($RequestInfo->action)) { //!isset($RequestInfo->action) !isset($_REQUEST["action"])
 
-    echo json_encode(["error" => "bad request data"]);
+    echo json_encode(["status" => false, "msg" => "bad request data"]);
     die();
 }
 #
-session_start();
 
 require "vendor/autoload.php";
 require "./inc/_Config.php";
@@ -26,13 +41,12 @@ require "./inc/controllers/Users.php";
 require "./inc/controllers/CustomCrypt.php";
 require "./inc/controllers/Posts.php";
 
-if ($_REQUEST['action'] == "login") {
+if ($RequestInfo->action == "login") {
 
     $res = new stdClass();
     $res->status = false;
     $res->msg = "error";
     #
-    $requestData = $_REQUEST['data'];
 
     if (isset($_SESSION['User'])) {
         $res->msg = "error user is logged!";
@@ -41,7 +55,7 @@ if ($_REQUEST['action'] == "login") {
     }
 
     // check for valid token
-    if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
         $res->msg =  "access denied!";
         // change token
         $_SESSION['csrf_token'] = Common::generateToken();
@@ -50,8 +64,7 @@ if ($_REQUEST['action'] == "login") {
         exit();
     }
 
-    //print_r($requestData);
-    $res->status =  Users::login($requestData['username'], $requestData['password']);
+    $res->status =  Users::login($RequestInfo->username, $RequestInfo->password);
     $res->msg = $res->status ? "Login complete!" : "Invalid username or password!";
     //print_r($res);
 
@@ -59,7 +72,7 @@ if ($_REQUEST['action'] == "login") {
     exit();
 }
 
-if ($_REQUEST['action'] == "signup") {
+if ($RequestInfo->action == "signup") {
 
     // print_r($_REQUEST);
     // print_r($_SESSION);
@@ -68,9 +81,6 @@ if ($_REQUEST['action'] == "signup") {
     $res->status = false;
     $res->msg = "error";
     #
-    $requestData = $_REQUEST['data'];
-    $userInfo = $requestData['user'];
-
     if (isset($_SESSION['User'])) {
         $res->msg = "error user is logged!";
         echo json_encode($res);
@@ -78,7 +88,7 @@ if ($_REQUEST['action'] == "signup") {
     }
 
     // check for valid token
-    if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
         $res->msg =  "access denied!";
         // change token
         $_SESSION['csrf_token'] = Common::generateToken();
@@ -88,7 +98,7 @@ if ($_REQUEST['action'] == "signup") {
     }
 
     // check for valid user information
-    if (Users::checkForExistingUser($userInfo['username'])) {
+    if (Users::checkForExistingUser($RequestInfo->user->username)) {
         $res->msg =  "User exists!";
         //
         echo json_encode($res);
@@ -96,28 +106,28 @@ if ($_REQUEST['action'] == "signup") {
     }
 
     // check for valid user information
-    if (strlen($userInfo['username']) < 3) {
+    if (strlen($RequestInfo->user->username) < 3) {
         $res->msg =  "Invalid username!";
         //
         echo json_encode($res);
         exit();
     }
 
-    if (!filter_var($userInfo['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($RequestInfo->user->email, FILTER_VALIDATE_EMAIL)) {
         $res->msg =  "Invalid email!";
         //
         echo json_encode($res);
         exit();
     }
 
-    if (!Users::checkPassword($userInfo['password1'])) {
+    if (!Users::checkPassword($RequestInfo->user->password1)) {
         $res->msg =  "Invalid password!";
         //
         echo json_encode($res);
         exit();
     }
 
-    if (strcmp($userInfo['password1'], $userInfo['password2']) !== 0) {
+    if (strcmp($RequestInfo->user->password1, $RequestInfo->user->password2) !== 0) {
         $res->msg =  "Passwords do not match!";
         //
         echo json_encode($res);
@@ -125,7 +135,7 @@ if ($_REQUEST['action'] == "signup") {
     }
 
     // register the user
-    $res->status =  Users::signup($userInfo);
+    $res->status =  Users::signup($RequestInfo->user);
     if ($res->status) {
         $res->msg = "Signup complete!";
     }
@@ -136,15 +146,12 @@ if ($_REQUEST['action'] == "signup") {
 }
 
 
-if ($_REQUEST['action'] == "create-post") {
+if ($RequestInfo->action == "create-post") {
 
     $res = new stdClass();
     $res->status = false;
     $res->msg = "error";
     #
-    $requestData = $_REQUEST['data'];
-    $post = $requestData['post'];
-
     if (!isset($_SESSION['User'])) {
         $res->msg = "user is not logged!";
         echo json_encode($res);
@@ -152,7 +159,7 @@ if ($_REQUEST['action'] == "create-post") {
     }
 
     // check for valid token
-    if (empty($requestData['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $requestData['csrf_token'])) {
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
         $res->msg =  "access denied!";
         // change token
         $_SESSION['csrf_token'] = Common::generateToken();
@@ -161,27 +168,38 @@ if ($_REQUEST['action'] == "create-post") {
         exit();
     }
 
-    if (empty($post['title'])) {
+    if (empty($RequestInfo->post->title)) {
         $res->msg =  "You need a title!";
         //
         echo json_encode($res);
         exit();
     }
 
-    if (empty($post['image']) || !Posts::checkIfValidImage($post['image'])) {
+    if (empty($RequestInfo->post->image) || !Posts::checkIfValidImage($RequestInfo->post->image)) {
         $res->msg =  "You need an image!";
         //
         echo json_encode($res);
         exit();
     }
 
-
-    $res->status = Posts::createPost($requestData['post']);
+    $res->status = Posts::createPost((array)$RequestInfo->post);
     $res->msg = $res->status ? "Post created!" : "Error during creation!";
-
 
     echo json_encode($res);
     exit();
 }
 
-exit();
+if ($RequestInfo->action == "fetchPosts") { //$Request->action
+
+    $res = new stdClass();
+    $res->status = false;
+    $res->msg = "error";
+    $res->posts = [];
+    #
+    $res->posts = Posts::fetchPosts();
+
+    echo json_encode($res);
+    exit();
+}
+
+exit("kek");

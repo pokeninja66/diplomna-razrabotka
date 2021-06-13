@@ -12,6 +12,7 @@ require "./inc/controllers/Posts.php";
 #set DB
 DB::Init(Config::$server, Config::$username, Config::$password, Config::$database);
 #
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 7);// one week
 session_start();
 
 if(!isset($_SESSION['csrf_token'])){

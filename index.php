@@ -26,7 +26,6 @@ require "./config.php";
     <link rel="stylesheet" href="./public/css/main.css">
     <!-- add VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-
 </head>
 
 <body>
@@ -48,17 +47,17 @@ require "./config.php";
             </nav>
         </header>
 
-        <div class="main-content">
-            <pre>
-                <?php
-                        print_r($_SESSION);
-                        print_r(Posts::fetchPosts());
-                ?>
-            </pre>
+        <div class="main-content" v-if="posts.length">
+            <div v-for="post in posts" :key="post.post_id">
+                <div class="title">{{post.title}}</div>
+                <img :src="post.image_base64" width="500px" />
+            </div>
         </div>
 
     </div>
-
+    <script>
+        const csrf = '<?php echo $_SESSION['csrf_token']; ?>';
+    </script>
     <script src="./public/scripts/main.js" async defer></script>
 </body>
 

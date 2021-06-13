@@ -91,20 +91,38 @@ const app = new Vue({
             }
             const _self = this;
 
+            const data = {
+                action: "signup",
+                csrf_token: this.csrf_token,
+                user: this.user,
+            }
 
-            $.post("./requests.php", {
-                action: 'signup',
-                data: {
-                    csrf_token: this.csrf_token,
-                    user: this.user
-                }
-            }, function(data) {
-                if (data.status) {
-                    window.location = "./";
-                } else {
-                    alert(data.msg);
-                }
-            });
+            fetch("/requests.php", {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        return response.json();
+                    }
+                    return false;
+                })
+                .then(data => {
+                    console.log(data);
+                    //_self.fetch_complete = true;
+                    if (data.status) {
+                        window.location = "./";
+                    } else {
+                        alert(data.msg);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
 
         },
 

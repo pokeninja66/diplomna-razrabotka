@@ -30,23 +30,41 @@ const app = new Vue({
                 alert("Please enter a valid user credentials");
                 return false;
             }
-            const _self = this;
 
+            const data = {
+                action: "login",
+                csrf_token: this.csrf_token,
+                username: this.username,
+                password: this.password
+            }
 
-            $.post("./requests.php", {
-                action: 'login',
-                data: {
-                    csrf_token: this.csrf_token,
-                    username: this.username,
-                    password: this.password
-                }
-            }, function(data) {
-                if (data.status) {
-                    window.location = "./";
-                } else {
-                    alert(data.msg);
-                }
-            });
+            fetch("/requests.php", {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        return response.json();
+                    }
+                    return false;
+                })
+                .then(data => {
+                    console.log(data);
+                    //_self.fetch_complete = true;
+                    if (data.status) {
+                        window.location = "./";
+                    } else {
+                        alert(data.msg);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+
 
         }
     }

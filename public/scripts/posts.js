@@ -53,24 +53,42 @@ const app = new Vue({
             }
             const _self = this;
 
+            const data = {
+                action: "create-post",
+                csrf_token: this.csrf_token,
+                post: {
+                    title: this.title,
+                    description: this.description,
+                    image: this.image_src
+                }
+            }
 
-            $.post("./requests.php", {
-                action: 'create-post',
-                data: {
-                    csrf_token: this.csrf_token,
-                    post: {
-                        title: this.title,
-                        description: this.description,
-                        image: this.image_src
+            fetch("/requests.php", {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        return response.json();
                     }
-                }
-            }, function(data) {
-                if (data.status) {
-                    window.location = "./";
-                } else {
-                    alert(data.msg);
-                }
-            });
+                    return false;
+                })
+                .then(data => {
+                    console.log(data);
+                    //_self.fetch_complete = true;
+                    if (data.status) {
+                        window.location = "./";
+                    } else {
+                        alert(data.msg);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
 
         }
     }
