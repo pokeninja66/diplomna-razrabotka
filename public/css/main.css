@@ -62,9 +62,10 @@ a {
 }
 
 .oneItem {
-    margin: 0 auto;
+    margin: 0.5rem auto;
     padding: 2rem;
     display: grid;
     gap: 5px;
     place-items: center;
+    max-width: 600px;
 }

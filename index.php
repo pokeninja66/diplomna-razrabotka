@@ -3,6 +3,11 @@
 $_HAS_PAGE_ACCESS = true;
 require "./config.php";
 
+$page_title = "Diplomna Home";
+$page_description = "Well this is some not so coll shit!";
+$page_extra_css = "";
+$page_main_script = "main";
+
 ?>
 
 <!DOCTYPE html>
@@ -12,22 +17,7 @@ require "./config.php";
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Diplomna</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <base href="./">
-
-    <!-- css -->
-    <link rel="stylesheet" href="./public/css/reset.css">
-    <link rel="stylesheet" href="./public/css/main.css">
-    <link href="./public/css/font-awsome.css" rel="stylesheet">
-    <!-- add VUE -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-</head>
+<?php require "./inc/partials/head.php"; ?>
 
 <body>
     <!--[if lt IE 7]>
@@ -36,17 +26,7 @@ require "./config.php";
 
     <div id="app">
 
-        <header>
-            <nav id="navigation">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <?php foreach (Common::setMenuArr() as $name => $link) { ?>
-                        <li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
-                    <?php } ?>
-
-                </ul>
-            </nav>
-        </header>
+        <?php require "./inc/partials/header.php"; ?>
 
         <div class="main-content" v-if="posts.length">
             <div class="oneItem" :id="post.post_id" v-for="post in posts" :key="post.post_id">
@@ -58,15 +38,12 @@ require "./config.php";
                 <span class="post-date">{{post.created_at}}</span>
                 <img class="post-image" :src="post.image_base64" width="500px" />
                 <div class="description">{{post.description}}</div>
-               
+
             </div>
         </div>
 
     </div>
-    <script>
-        const csrf = '<?php echo $_SESSION['csrf_token']; ?>';
-    </script>
-    <script src="./public/scripts/main.js" async defer></script>
+    <?php require "./inc/partials/scripts.php"; ?>
 </body>
 
 </html>
