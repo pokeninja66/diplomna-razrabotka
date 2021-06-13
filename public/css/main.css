@@ -53,8 +53,15 @@ a {
 .main-content {
     display: grid;
     place-items: center;
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     grid-template-columns: 1fr;
-    grid-template-rows: 85vh;
+    grid-template-rows: auto;
+    padding: 2rem;
+    min-height: 800px;
+}
+
+.oneItem {
+    margin: 0 auto;
+    padding: 2rem;
 }

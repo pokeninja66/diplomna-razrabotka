@@ -24,6 +24,7 @@ require "./config.php";
     <!-- css -->
     <link rel="stylesheet" href="./public/css/reset.css">
     <link rel="stylesheet" href="./public/css/main.css">
+    <link href="./public/css/font-awsome.css" rel="stylesheet">
     <!-- add VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
@@ -48,9 +49,15 @@ require "./config.php";
         </header>
 
         <div class="main-content" v-if="posts.length">
-            <div v-for="post in posts" :key="post.post_id">
+            <div class="oneItem" :id="post.post_id" v-for="post in posts" :key="post.post_id">
+                <span class="options">
+                    <i @click="editPost(post.post_id)" class="far fa-edit"></i>
+                    <i class="fas fa-trash"></i>
+                </span>
                 <div class="title">{{post.title}}</div>
-                <img :src="post.image_base64" width="500px" />
+                <span class="post-date">{{post.created_at}}</span>
+                <div class="description">{{post.description}}</div>
+                <img class="post-image" :src="post.image_base64" width="500px" />
             </div>
         </div>
 

@@ -24,6 +24,10 @@ textarea {
     border: 1px solid #2d598f;
 }
 
+textarea {
+    min-height: 150px;
+}
+
 .btn {
     text-align: center;
     background-color: #00536D;

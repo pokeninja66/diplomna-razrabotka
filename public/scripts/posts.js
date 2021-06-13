@@ -2,11 +2,24 @@ const app = new Vue({
     el: '#app-login',
     data: {
         csrf_token: csrf,
+        action: "create-post",
+        post_id: null,
         title: "",
         description: "",
         image_src: ""
     },
+    created() {
+        this.checkUrl();
+    },
     methods: {
+        checkUrl() {
+            let uri = window.location.search.substring(1);
+            let params = new URLSearchParams(uri);
+
+            if (params.get("post")) {
+                this.fetchPostData(params.get("post"));
+            }
+        },
         validateInput() {
             let flag = 0;
 
@@ -45,7 +58,7 @@ const app = new Vue({
 
         },
         sendRequest() {
-            console.log(this.validateInput());
+            //console.log(this.validateInput());
 
             if (!this.validateInput()) {
                 alert("Please enter a valid at least a title and image!");
@@ -54,9 +67,10 @@ const app = new Vue({
             const _self = this;
 
             const data = {
-                action: "create-post",
+                action: this.action,
                 csrf_token: this.csrf_token,
                 post: {
+                    post_id: this.post_id,
                     title: this.title,
                     description: this.description,
                     image: this.image_src
@@ -90,6 +104,41 @@ const app = new Vue({
                     console.log(err);
                 });
 
+        },
+        fetchPostData(post_id) {
+            const data = {
+                action: "get-post",
+                csrf_token: this.csrf_token,
+                post_id: post_id
+            }
+            const _self = this;
+
+            fetch("/requests.php", {
+                method: 'POST',
+                mode: 'same-origin',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }
+                return false;
+            }).then(data => {
+                //console.log(data);
+                if (data.status) {
+                    _self.action = "update-post";
+                    _self.post_id = post_id;
+                    _self.title = data.post.title;
+                    _self.description = data.post.description;
+                    _self.image_src = data.post.image_base64;
+                }
+
+            }).catch(err => {
+                console.log(err);
+            });
         }
     }
 })

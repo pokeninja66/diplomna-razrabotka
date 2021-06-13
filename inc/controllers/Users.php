@@ -38,7 +38,7 @@ class Users
         if (!is_array($userInfo)) {
             $userInfo =  (array) $userInfo;
         }
-      
+
         // escape the array
         DB::mysqliRealEscapeStringOnArray($userInfo);
 
@@ -55,7 +55,8 @@ class Users
         return false;
     }
 
-    public static function checkForExistingUser($username){
+    public static function checkForExistingUser($username)
+    {
         $username = DB::mysqliRealEscapeString($username);
         $query = "SELECT id FROM `users` WHERE `username`='$username'";
         return DB::numRows(DB::query($query));
@@ -88,5 +89,15 @@ class Users
             return false;
         }
         return true;
+    }
+
+    public static function checkForEditPermissions($post_id)
+    {
+        if ($_SESSION["User"]->user_type == 2) {
+            return true;
+        }
+
+        $query = "SELECT `title` FROM `user_posts` WHERE `post_id`='$post_id' AND `user_id`='" . $_SESSION['User']->id . "'";
+        return DB::numRows(DB::query($query));
     }
 }

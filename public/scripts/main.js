@@ -7,13 +7,13 @@ const app = new Vue({
         this.fetchPosts();
 
     },
-    watch: {
-        posts: function(newVal, oldVal) {
-            console.log(newVal);
-            console.log(oldVal);
-            this.fetch_complete = newVal.length > 0;
-        }
-    },
+    // watch: {
+    //     posts: function(newVal, oldVal) {
+    //         console.log(newVal);
+    //         console.log(oldVal);
+    //         this.fetch_complete = newVal.length > 0;
+    //     }
+    // },
     methods: {
         fetchPosts: async function() {
 
@@ -41,10 +41,10 @@ const app = new Vue({
                     return [];
                 })
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     //_self.fetch_complete = true;
                     _self.posts = data.posts;
-                    console.log(_self.posts);
+                    //console.log(_self.posts);
                 }).catch(err => {
                     console.log(err);
                 });
@@ -55,6 +55,15 @@ const app = new Vue({
             // }, function(data) {
             //     this.posts = data.posts;
             // });
+        },
+        editPost(post_id) {
+            //alert(post_id);
+            if (confirm("Are you sure you want edit?")) {
+                const url = window.location.origin + "/posts?post=" + post_id;
+                console.log(url);
+                window.location = url;
+            }
         }
+
     }
 })

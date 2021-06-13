@@ -71,7 +71,10 @@ if (!isset($_SESSION['User'])) {
                     <img :src="image_src" id="img" width="100" height="100">
                 </div>
 
-                <a class="btn" @click="sendRequest()">create post</a>
+                <a class="btn" @click="sendRequest()">
+                    <span v-if='action=="create-post"'>Create post</span>
+                    <span v-else>Edit post</span>
+                </a>
             </div>
 
         </div>

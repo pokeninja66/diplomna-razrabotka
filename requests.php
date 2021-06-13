@@ -196,7 +196,78 @@ if ($RequestInfo->action == "fetchPosts") { //$Request->action
     $res->msg = "error";
     $res->posts = [];
     #
-    $res->posts = Posts::fetchPosts();
+    $res->posts = Posts::fetchPosts(" 1 ", " ORDER BY `created_at` DESC ");
+
+    echo json_encode($res);
+    exit();
+}
+
+if ($RequestInfo->action == "get-post") {
+
+    $res = new stdClass();
+    $res->status = false;
+    $res->msg = "error";
+    #
+    if (!isset($_SESSION['User'])) {
+        $res->msg = "user is not logged!";
+        echo json_encode($res);
+        exit();
+    }
+
+    // check for valid token
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
+        $res->msg =  "access denied!";
+        // change token
+        $_SESSION['csrf_token'] = Common::generateToken();
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    if (!Users::checkForEditPermissions($RequestInfo->post_id)) {
+        $res->msg = "this user can't edit this post!";
+        echo json_encode($res);
+        exit();
+    }
+
+    $res->post = Posts::getPostById($RequestInfo->post_id);
+    $res->status = true;
+    $res->msg = "post loaded";
+
+    echo json_encode($res);
+    exit();
+}
+
+if ($RequestInfo->action == "update-post") {
+
+    $res = new stdClass();
+    $res->status = false;
+    $res->msg = "error";
+    #
+    if (!isset($_SESSION['User'])) {
+        $res->msg = "user is not logged!";
+        echo json_encode($res);
+        exit();
+    }
+
+    // check for valid token
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
+        $res->msg =  "access denied!";
+        // change token
+        $_SESSION['csrf_token'] = Common::generateToken();
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    if (!Users::checkForEditPermissions($RequestInfo->post->post_id)) {
+        $res->msg = "this user can't edit this post!";
+        echo json_encode($res);
+        exit();
+    }
+
+    $res->status = Posts::updatePost((array)$RequestInfo->post);
+    $res->msg = $res->status ? "Post updated!" : "Error during edit!";
 
     echo json_encode($res);
     exit();
