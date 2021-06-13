@@ -50,7 +50,7 @@ require "./config.php";
 
         <div class="main-content" v-if="posts.length">
             <div class="oneItem" :id="post.post_id" v-for="post in posts" :key="post.post_id">
-                <span class="options">
+                <span v-if="post.can_edit" class="options">
                     <i @click="editPost(post.post_id)" class="far fa-edit"></i>
                     <i @click="deletePost(post.post_id)" class="fas fa-trash"></i>
                 </span>

@@ -49,13 +49,6 @@ const app = new Vue({
                 }).catch(err => {
                     console.log(err);
                 });
-
-            // $.post("./requests.php", {
-            //     csrf_token: csrf,
-            //     action: "fetchPosts"
-            // }, function(data) {
-            //     this.posts = data.posts;
-            // });
         },
         editPost(post_id) {
             //alert(post_id);

@@ -27,7 +27,14 @@ class Posts
     public static function fetchPosts($where = " 1 ", $order = "", $limit = "")
     {
         $query = "SELECT * FROM `user_posts` WHERE $where $order $limit";
-        return DB::fetchObjectSet(DB::query($query));
+
+        $posts = DB::fetchObjectSet(DB::query($query));
+        // yeah this is kinda shitty coded?
+        foreach ($posts as $key => $onePost) {
+            $posts[$key]->can_edit = Users::checkForEditPermissions($onePost->post_id);
+        }
+
+        return $posts;
     }
 
     public static function checkIfValidImage($base64Image)
