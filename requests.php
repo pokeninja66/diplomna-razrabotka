@@ -273,4 +273,39 @@ if ($RequestInfo->action == "update-post") {
     exit();
 }
 
+if ($RequestInfo->action == "delete-post") {
+
+    $res = new stdClass();
+    $res->status = false;
+    $res->msg = "error";
+    #
+    if (!isset($_SESSION['User'])) {
+        $res->msg = "user is not logged!";
+        echo json_encode($res);
+        exit();
+    }
+
+    // check for valid token
+    if (empty($RequestInfo->csrf_token) || !hash_equals($_SESSION['csrf_token'], $RequestInfo->csrf_token)) {
+        $res->msg =  "access denied!";
+        // change token
+        $_SESSION['csrf_token'] = Common::generateToken();
+        //
+        echo json_encode($res);
+        exit();
+    }
+
+    if (!Users::checkForEditPermissions($RequestInfo->post_id)) {
+        $res->msg = "this user can't delete this post!";
+        echo json_encode($res);
+        exit();
+    }
+
+    $res->status = Posts::deletePost($RequestInfo->post_id);
+    $res->msg = $res->status ? "Post deleted!" : "Error during deletion!";
+
+    echo json_encode($res);
+    exit();
+}
+
 exit("kek");

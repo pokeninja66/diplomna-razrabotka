@@ -52,12 +52,13 @@ require "./config.php";
             <div class="oneItem" :id="post.post_id" v-for="post in posts" :key="post.post_id">
                 <span class="options">
                     <i @click="editPost(post.post_id)" class="far fa-edit"></i>
-                    <i class="fas fa-trash"></i>
+                    <i @click="deletePost(post.post_id)" class="fas fa-trash"></i>
                 </span>
                 <div class="title">{{post.title}}</div>
                 <span class="post-date">{{post.created_at}}</span>
-                <div class="description">{{post.description}}</div>
                 <img class="post-image" :src="post.image_base64" width="500px" />
+                <div class="description">{{post.description}}</div>
+               
             </div>
         </div>
 

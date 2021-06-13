@@ -67,8 +67,14 @@ class Posts
                     `description`='$description',
                     `image_base64`='$image'
                     WHERE `post_id` = '{$post['post_id']}'";
-        
+
         //echo $query;
+        return DB::query($query);
+    }
+
+    public static function deletePost($id)
+    {
+        $query = "DELETE FROM `user_posts` WHERE `post_id`='$id'";
         return DB::query($query);
     }
 }

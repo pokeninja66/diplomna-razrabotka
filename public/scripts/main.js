@@ -1,6 +1,7 @@
 const app = new Vue({
     el: '#app',
     data: {
+        csrf_token: csrf,
         posts: []
     },
     created: function() {
@@ -58,10 +59,48 @@ const app = new Vue({
         },
         editPost(post_id) {
             //alert(post_id);
-            if (confirm("Are you sure you want edit?")) {
+            if (confirm("Are you sure you want to edit?")) {
                 const url = window.location.origin + "/posts?post=" + post_id;
                 console.log(url);
                 window.location = url;
+            }
+        },
+
+        deletePost(post_id) {
+            //alert(post_id);
+            if (confirm("Are you sure you want to delete this post?")) {
+
+                const data = {
+                    action: "delete-post",
+                    csrf_token: this.csrf_token,
+                    post_id: post_id
+                }
+                const _self = this;
+
+                fetch("/requests.php", {
+                    method: 'POST',
+                    mode: 'same-origin',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => {
+                    if (response.status == 200) {
+                        return response.json();
+                    }
+                    return [];
+                }).then(data => {
+                    //console.log(data);
+                    if (data.status) {
+                        window.location = window.origin;
+                    } else {
+                        alert(data.msg);
+                    }
+
+                }).catch(err => {
+                    console.log(err);
+                });
             }
         }
 
