@@ -1,0 +1,10 @@
+.row {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+i {
+    cursor: pointer;
+}

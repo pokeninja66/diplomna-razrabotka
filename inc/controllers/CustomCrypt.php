@@ -7,7 +7,7 @@ class CustomCrypt
 {
 
     private static $key = null;
-    private static $key_path = "./CustomKey.txt";
+    public static $key_path = "./CustomKey.txt";
 
     private static function generateNewKey()
     {

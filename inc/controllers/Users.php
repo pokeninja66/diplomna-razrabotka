@@ -93,11 +93,27 @@ class Users
 
     public static function checkForEditPermissions($post_id)
     {
+        if (!isset($_SESSION["User"])) {
+            return false;
+        }
+
         if ($_SESSION["User"]->user_type == 2) {
             return true;
         }
 
         $query = "SELECT `title` FROM `user_posts` WHERE `post_id`='$post_id' AND `user_id`='" . $_SESSION['User']->id . "'";
         return DB::numRows(DB::query($query));
+    }
+
+    public static function getAdminUsersList()
+    {
+        $query = "SELECT * FROM `users` ORDER BY `created_at` DESC ";
+        return DB::fetchObjectSet(DB::query($query));
+    }
+
+    public static function deleteUser($id)
+    {
+        $query = "DELETE FROM `users` WHERE `id`='$id'";
+        return DB::query($query);
     }
 }

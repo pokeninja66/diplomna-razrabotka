@@ -69,3 +69,7 @@ a {
     place-items: center;
     max-width: 600px;
 }
+
+i {
+    cursor: pointer;
+}
