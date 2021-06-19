@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["User"]) && $_SESSION["User"]->user_type != 2) {
+if (!isset($_SESSION["User"]) || $_SESSION["User"]->user_type != 2) {
     header("Location: /");
 }
 require "../vendor/autoload.php";

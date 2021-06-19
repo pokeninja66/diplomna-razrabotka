@@ -139,8 +139,7 @@ if ($RequestInfo->action == "signup") {
     if ($res->status) {
         $res->msg = "Signup complete!";
     }
-    //print_r($res);
-
+    
     echo json_encode($res);
     exit();
 }
@@ -192,8 +191,6 @@ if ($RequestInfo->action == "create-post") {
 if ($RequestInfo->action == "fetchPosts") { //$Request->action
 
     $res = new stdClass();
-    $res->status = false;
-    $res->msg = "error";
     $res->posts = [];
     #
     $res->posts = Posts::fetchPosts(" 1 ", " ORDER BY `created_at` DESC ");

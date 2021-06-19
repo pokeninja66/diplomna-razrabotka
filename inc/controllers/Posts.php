@@ -18,17 +18,17 @@ class Posts
         $description = $post['description'] ? trim($post['description']) : "";
         $image = trim($post['image']);
 
-        $query = "INSERT INTO `user_posts` VALUES(uuid(),'$user_id','$title','$description','$image',now())";
+        $params = [$user_id, $title, $description, $image];
+        $query = "INSERT INTO `user_posts` VALUES(uuid(), ? , ? , ? , ?,now())";
 
-
-        return DB::query($query);
+        return !DB::preparedQuery($query, $params, "ssss");
     }
 
     public static function fetchPosts($where = " 1 ", $order = "", $limit = "")
     {
         $query = "SELECT * FROM `user_posts` WHERE $where $order $limit";
 
-        $posts = DB::fetchObjectSet(DB::query($query));
+        $posts = DB::fetchObjectSet(DB::preparedQuery($query, [], ""));
         // yeah this is kinda shitty coded?
         foreach ($posts as $key => $onePost) {
             $posts[$key]->can_edit = Users::checkForEditPermissions($onePost->post_id);
@@ -50,9 +50,9 @@ class Posts
 
     public static function getPostById($id)
     {
-        $query = "SELECT * FROM `user_posts` WHERE `post_id`='$id'";
+        $query = "SELECT * FROM `user_posts` WHERE `post_id`= ? ";
 
-        return DB::fetchObject(DB::query($query));
+        return DB::fetchObject(DB::preparedQuery($query, [$id], "s"));
     }
 
     public static function updatePost($post)
@@ -70,18 +70,19 @@ class Posts
         $image = trim($post['image']);
 
         $query = "UPDATE `user_posts` SET 
-                    `title`='$title',
-                    `description`='$description',
-                    `image_base64`='$image'
-                    WHERE `post_id` = '{$post['post_id']}'";
+                    `title`= ? ,
+                    `description`= ? ,
+                    `image_base64`= ? 
+                    WHERE `post_id` =  ? ";
 
+        $params = [$title, $description, $image, $post['post_id']];
         //echo $query;
-        return DB::query($query);
+        return !DB::preparedQuery($query, $params, "ssss");
     }
 
     public static function deletePost($id)
     {
-        $query = "DELETE FROM `user_posts` WHERE `post_id`='$id'";
-        return DB::query($query);
+        $query = "DELETE FROM `user_posts` WHERE `post_id`=?";
+        return !DB::preparedQuery($query,[$id],"s");
     }
 }

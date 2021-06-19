@@ -51,9 +51,6 @@ $page_main_script = "login";
         </div>
 
     </div>
-    <script>
-        const csrf = '<?php echo $_SESSION['csrf_token']; ?>';
-    </script>
     <?php require "./inc/partials/scripts.php"; ?>
 </body>
 

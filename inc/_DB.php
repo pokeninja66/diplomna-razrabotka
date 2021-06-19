@@ -64,6 +64,66 @@ class DB extends stdClass
     }
 
     /**
+     * Execute prepared query
+     * @param string $query
+     * @param array $params
+     * @param string $types
+     * @param type $transaction
+     * @return boolean
+     */
+    public static function preparedQuery($query, $params, $types, $transaction = FALSE)
+    {
+        //
+        // Remove any pre-existing queries
+        //
+        self::$query_result = FALSE;
+        if ($query != "") {
+            self::$num_queries++;
+            if ($transaction == "BEGIN_TRANSACTION" && !self::$in_transaction) {
+                $result = mysqli_query(self::$connection, "BEGIN");
+                if (!$result) {
+                    return false;
+                }
+                self::$in_transaction = TRUE;
+            }
+            // prepare
+            $stmt = self::$connection->prepare($query);
+            if(count($params)){
+                $stmt->bind_param($types, ...$params);
+            }
+            
+            // Execute statement
+            if ($stmt->execute()) {
+                // !!! this returns false on INSERT, UPDATE and DELETE query
+                return self::$query_result = $stmt->get_result();
+            }
+
+            return false;
+        } else {
+            if ($transaction == "END_TRANSACTION" && self::$in_transaction) {
+                $result = mysqli_query(self::$connection, "COMMIT");
+            }
+        }
+
+        if (self::$query_result) {
+            if ($transaction == "END_TRANSACTION" && self::$in_transaction) {
+                self::$in_transaction = FALSE;
+                if (!mysqli_query(self::$connection, "COMMIT")) {
+                    mysqli_query(self::$connection, "ROLLBACK");
+                    return false;
+                }
+            }
+            return self::$query_result;
+        } else {
+            if (self::$in_transaction) {
+                mysqli_query(self::$connection, "ROLLBACK");
+                self::$in_transaction = FALSE;
+            }
+            return false;
+        }
+    }
+
+    /**
      * Returns the number of rows in the result set. 
      * @param type $query_id  - Result of query
      * @return type

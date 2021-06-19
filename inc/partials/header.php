@@ -1,4 +1,7 @@
 <header>
+    <?php if ($_SESSION['User']) { ?>
+        <span>Current User: <?php echo $_SESSION['User']->username ?></span>
+    <?php } ?>
     <nav id="navigation">
         <ul>
             <li><a href="/" title="Home"><i class="fas fa-home"></i></a></li>

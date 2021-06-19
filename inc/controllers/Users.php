@@ -9,15 +9,16 @@ class Users
         $username = DB::mysqliRealEscapeString($username); //CustomCrypt::encrypt();
         //$password = password_hash(DB::mysqliRealEscapeString($password), PASSWORD_DEFAULT);
 
-        $query = "SELECT `password` FROM `users` WHERE `username`='$username';";
+        $query = "SELECT `password` FROM `users` WHERE `username`= ? ";
         //echo $query;
-        $checkObj = DB::fetchObject(DB::query($query));
+        $checkObj = DB::fetchObject(DB::preparedQuery($query, [$username], 's'));
+        //
+        if (!$checkObj) return false;
 
         // verify password
         if (password_verify($password, $checkObj->password)) {
-            $query = "SELECT `id`, `email`, `created_at`,`user_type` FROM `users` WHERE `username`='$username' AND `password`='$checkObj->password';";
-            $dbUser = DB::fetchObject(DB::query($query));
-            //print_r($dbUser);
+            $query = "SELECT `id`, `email`, `created_at`,`user_type` FROM `users` WHERE `username`= ? AND `password`= ? ;";
+            $dbUser = DB::fetchObject(DB::preparedQuery($query, [$username, $checkObj->password], 'ss'));
             // set user
             if ($dbUser) {
                 $_SESSION['User'] = new stdClass();
@@ -38,7 +39,6 @@ class Users
         if (!is_array($userInfo)) {
             $userInfo =  (array) $userInfo;
         }
-
         // escape the array
         DB::mysqliRealEscapeStringOnArray($userInfo);
 
@@ -46,20 +46,20 @@ class Users
         $email = CustomCrypt::encrypt($userInfo['email']);
         $password = password_hash($userInfo['password1'], PASSWORD_DEFAULT);
 
-        $query = "INSERT INTO `users` VALUES(uuid(),'$username','$password','$email',1,now());";
+        $query = "INSERT INTO `users` VALUES(uuid(), ? , ? , ? , 1 , now() );";
+        $params = [$username, $password, $email];
 
-        if (DB::query($query)) {
-            return self::login($userInfo['username'], $userInfo['password1']);
+        if (!DB::preparedQuery($query, $params, 'sss')) {
+            return self::login($userInfo['username'], $userInfo['password2']);
         }
-
         return false;
     }
 
     public static function checkForExistingUser($username)
     {
         $username = DB::mysqliRealEscapeString($username);
-        $query = "SELECT id FROM `users` WHERE `username`='$username'";
-        return DB::numRows(DB::query($query));
+        $query = "SELECT id FROM `users` WHERE `username`= ? ";
+        return DB::numRows(DB::preparedQuery($query, [$username], "s"));
     }
 
     public static function checkPassword($pass)
@@ -101,19 +101,19 @@ class Users
             return true;
         }
 
-        $query = "SELECT `title` FROM `user_posts` WHERE `post_id`='$post_id' AND `user_id`='" . $_SESSION['User']->id . "'";
-        return DB::numRows(DB::query($query));
+        $query = "SELECT `title` FROM `user_posts` WHERE `post_id`= ? AND `user_id`= ? ";
+        return DB::numRows(DB::preparedQuery($query, [$post_id, $_SESSION['User']->id], 'ss'));
     }
 
     public static function getAdminUsersList()
     {
         $query = "SELECT * FROM `users` ORDER BY `created_at` DESC ";
-        return DB::fetchObjectSet(DB::query($query));
+        return DB::fetchObjectSet(DB::preparedQuery($query, [], ""));
     }
 
     public static function deleteUser($id)
     {
-        $query = "DELETE FROM `users` WHERE `id`='$id'";
-        return DB::query($query);
+        $query = "DELETE FROM `users` WHERE `id`= ? ";
+        return DB::preparedQuery($query, [$id], "s");
     }
 }
