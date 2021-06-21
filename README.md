@@ -13,5 +13,13 @@ normal user:
 
 ## admin path
 /admin
+- can view and delete users
+- can view /edit /delete posts
 
-
+***
+## tests
+/tests
+- hash
+- encryption
+- decryption
+  

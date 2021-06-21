@@ -114,6 +114,6 @@ class Users
     public static function deleteUser($id)
     {
         $query = "DELETE FROM `users` WHERE `id`= ? ";
-        return DB::preparedQuery($query, [$id], "s");
+        return !DB::preparedQuery($query, [$id], "s");
     }
 }
