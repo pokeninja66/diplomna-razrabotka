@@ -1,6 +1,6 @@
 <header>
     <?php if ($_SESSION['User']) { ?>
-        <span class="user">Current User: <?php echo $_SESSION['User']->username ?></span>
+        <span class="user">User: <?php echo $_SESSION['User']->username ?></span>
     <?php } ?>
     <nav id="navigation">
         <ul>
