@@ -6,9 +6,11 @@ if (!isset($_SESSION["User"]) || $_SESSION["User"]->user_type != 2) {
 }
 require "../vendor/autoload.php";
 #
-require "../inc/_Config.php";
+require "../inc/configs/_config_admin.php";
+#
 require "../inc/_DB.php";
 require "../inc/Common.php";
+#
 require "../inc/controllers/Posts.php";
 require "../inc/controllers/Users.php";
 require "../inc/controllers/CustomCrypt.php";

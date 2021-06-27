@@ -13,6 +13,7 @@ class DB extends stdClass
         self::$connection = new mysqli($server, $username, $password, $database);
 
         if (self::$connection->connect_error) {
+
             die("Error: Can't connect to the database!");
         }
     }
@@ -88,16 +89,26 @@ class DB extends stdClass
             }
             // prepare
             $stmt = self::$connection->prepare($query);
-            if(count($params)){
+
+            // check prepare for error
+            if(!$stmt){
+                print_r(self::$connection->error);
+                return false;
+            }
+
+            if (count($params)) {
                 $stmt->bind_param($types, ...$params);
             }
-            
+
             // Execute statement
             if ($stmt->execute()) {
                 // !!! this returns false on INSERT, UPDATE and DELETE query
-                return self::$query_result = $stmt->get_result();
+                self::$query_result = $stmt->get_result();
+                $stmt->close();
+                return self::$query_result;
             }
 
+            $stmt->close();
             return false;
         } else {
             if ($transaction == "END_TRANSACTION" && self::$in_transaction) {

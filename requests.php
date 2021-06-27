@@ -10,7 +10,7 @@
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-//print_r($_SESSION);
+
 
 // kek | so you need to decode the payload using fetch... but not jquery
 $payload = file_get_contents('php://input');
@@ -30,9 +30,11 @@ if (!isset($RequestInfo->action)) { //!isset($RequestInfo->action) !isset($_REQU
 #
 
 require "vendor/autoload.php";
-require "./inc/_Config.php";
 require "./inc/_DB.php";
 require "./inc/Common.php";
+
+#
+Common::selectConfig();
 
 #set DB
 DB::Init(Config::$server, Config::$username, Config::$password, Config::$database);

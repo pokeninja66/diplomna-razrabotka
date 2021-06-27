@@ -46,10 +46,10 @@ class Users
         $email = CustomCrypt::encrypt($userInfo['email']);
         $password = password_hash($userInfo['password1'], PASSWORD_DEFAULT);
 
-        $query = "INSERT INTO `users` VALUES(uuid(), ? , ? , ? , 1 , now() );";
-        $params = [$username, $password, $email];
+        $query = "INSERT INTO `users` VALUES(uuid(), ? , ? , ? , ? , ? );";
+        $params = [$username, $password, $email, 1, date("Y-m-d h:m:s")];
 
-        if (!DB::preparedQuery($query, $params, 'sss')) {
+        if (!DB::preparedQuery($query, $params, 'sssis')) {
             return self::login($userInfo['username'], $userInfo['password2']);
         }
         return false;

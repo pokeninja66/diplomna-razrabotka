@@ -29,4 +29,34 @@ class Common extends stdClass
             ];
         }
     }
+
+    public static function selectConfig(){
+     
+        // if user is logged
+        if(isset($_SESSION['User']) && $_SESSION['User']->user_type==1){
+            require "./inc/configs/_config_standard.php";
+            return;
+        }
+
+        if(isset($_SESSION['User']) && $_SESSION['User']->user_type==2){
+            require "./inc/configs/_config_admin.php";
+            return;
+        }
+        // only for when there is no user and we need to login/signup one
+        if(!isset($_SESSION["User"]) && strpos($_SERVER['HTTP_REFERER'],'signup')){
+            require "./inc/configs/_config_read_only.php";
+            return;
+        }
+        if(!isset($_SESSION["User"]) && strpos($_SERVER['HTTP_REFERER'],'login')){
+            require "./inc/configs/_config_read_only.php";
+            return;
+        }
+
+        // default
+        if(!isset($_SESSION['User'])){
+            require "./inc/configs/_config_read_only.php";
+            return;
+        }
+
+    }
 }
