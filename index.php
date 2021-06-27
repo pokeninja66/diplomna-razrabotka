@@ -36,7 +36,7 @@ $page_main_script = "main";
                 </span>
                 <div class="title">{{post.title}}</div>
                 <span class="post-date">{{post.created_at}}</span>
-                <img class="post-image" :src="post.image_base64" width="500px" />
+                <img class="post-image" :src="post.image_base64" />
                 <div class="description">{{post.description}}</div>
 
             </div>

@@ -92,7 +92,7 @@ class DB extends stdClass
 
             // check prepare for error
             if(!$stmt){
-                print_r(self::$connection->error);
+                //print_r(self::$connection->error);
                 return false;
             }
 

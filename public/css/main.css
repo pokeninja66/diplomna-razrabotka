@@ -16,9 +16,13 @@ header {
     background-color: var(--header);
     width: 100%;
     padding: 1.2rem 0;
-    /* box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
-    -webkit-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);
-    -moz-box-shadow: 1px 18px 29px -5px rgba(0, 0, 0, 0.52);*/
+    display: grid;
+    justify-content: center;
+    gap: 5px;
+}
+
+.user {
+    border-bottom: 1px solid white;
 }
 
 a {
@@ -67,9 +71,39 @@ a {
     display: grid;
     gap: 5px;
     place-items: center;
-    max-width: 600px;
+    width: 550px;
+    border-radius: 5%;
+    border: 1px solid white;
 }
 
-i {
+.oneItem:hover {
+    box-shadow: 20px 20px 60px #0b0e14, -20px -20px 60px #0f141a;
+}
+
+.options {
+    margin: 0.5rem 0;
+}
+
+.options>i {
     cursor: pointer;
+    margin: 0 5px;
+}
+
+.title {
+    font-size: 1.5rem;
+    padding: auto;
+}
+
+.post-date {
+    font-size: 12px;
+}
+
+.post-image {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.description {
+    margin: 1rem 0;
+    text-align: justify;
 }

@@ -19,13 +19,13 @@ class Common extends stdClass
     {
         if (isset($_SESSION['User'])) {
             return [
-                '<i class="far fa-plus-square"></i>' => "./posts",
-                '<i class="fas fa-sign-out-alt"></i>' => "./logout"
+                '<i title="Create a post" class="far fa-plus-square"></i>' => "./posts",
+                '<i title="Logout" class="fas fa-sign-out-alt"></i>' => "./logout"
             ];
         } else {
             return [
-                '<i class="fas fa-sign-in-alt"></i>' => "./login",
-                '<i class="fas fa-user-plus"></i>' => "./signup"
+                '<i title="Login" class="fas fa-sign-in-alt"></i>' => "./login",
+                '<i title="Signup" class="fas fa-user-plus"></i>' => "./signup"
             ];
         }
     }
