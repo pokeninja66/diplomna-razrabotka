@@ -44,7 +44,7 @@ $page_main_script = "signup";
                 <input id="Username" v-model.trim="user.username" type="text" @blur="validateUsername" @input="validateUsername">
 
                 <span class="error-text" v-if="!valid_username">
-                    Please enter a valid username! Must be atleas 3 charackters!
+                    Please enter a valid username! Must be atleas 3 characters!
                 </span>
 
                 <label for="hashText">Email</label>
